@@ -1,0 +1,308 @@
+{
+  "info": {
+    "_postman_id": "amca-api-v1-collection",
+    "name": "AMCA API V1",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json"
+  },
+  "item": [
+    {
+      "name": "Login",
+      "request": {
+        "method": "POST",
+        "header": [],
+        "body": {
+          "mode": "raw",
+          "raw": "{\n  \"email\": \"usuario@demo.com\",\n  \"password\": \"password123\"\n}",
+          "options": {"raw": {"language": "json"}}
+        },
+        "url": {"raw": "{{baseUrl}}/api/login", "host": ["{{baseUrl}}"], "path": ["api", "login"]}
+      },
+      "event": [
+        {
+          "listen": "test",
+          "script": {
+            "exec": [
+              "var jsonData = pm.response.json();",
+              "pm.environment.set(\"authToken\", jsonData.token);",
+              "pm.test(\"Status code is 200\", function () { pm.response.to.have.status(200); });"
+            ],
+            "type": "text/javascript"
+          }
+        }
+      ]
+    },
+    {
+      "name": "Fincas",
+      "item": [
+        {
+          "name": "Crear Finca",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Finca Demo\",\n  \"ubicacion\": \"Valle\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {"raw": "{{baseUrl}}/api/v1/fincas", "host": ["{{baseUrl}}"], "path": ["api", "v1", "fincas"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () { pm.response.to.have.status(201); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Finca sin Token (Error 401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/api/v1/fincas/1", "host": ["{{baseUrl}}"], "path": ["api", "v1", "fincas", "1"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401 Unauthorized\", function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Finca Inexistente (Error 404)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "url": {"raw": "{{baseUrl}}/api/v1/fincas/9999", "host": ["{{baseUrl}}"], "path": ["api", "v1", "fincas", "9999"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 Not Found\", function () { pm.response.to.have.status(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Animales",
+      "item": [
+        {
+          "name": "Crear Animal",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Vaca Lola\",\n  \"especie\": \"Bovino\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {"raw": "{{baseUrl}}/api/v1/animales", "host": ["{{baseUrl}}"], "path": ["api", "v1", "animales"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () { pm.response.to.have.status(201); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Animal sin Token (Error 401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/api/v1/animales/1", "host": ["{{baseUrl}}"], "path": ["api", "v1", "animales", "1"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401 Unauthorized\", function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Animal Inexistente (Error 404)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "url": {"raw": "{{baseUrl}}/api/v1/animales/9999", "host": ["{{baseUrl}}"], "path": ["api", "v1", "animales", "9999"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 Not Found\", function () { pm.response.to.have.status(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Vegetales",
+      "item": [
+        {
+          "name": "Crear Vegetal",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Maíz\",\n  \"tipo\": \"Cereal\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {"raw": "{{baseUrl}}/api/v1/vegetales", "host": ["{{baseUrl}}"], "path": ["api", "v1", "vegetales"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () { pm.response.to.have.status(201); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Vegetal sin Token (Error 401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/api/v1/vegetales/1", "host": ["{{baseUrl}}"], "path": ["api", "v1", "vegetales", "1"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401 Unauthorized\", function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Vegetal Inexistente (Error 404)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "url": {"raw": "{{baseUrl}}/api/v1/vegetales/9999", "host": ["{{baseUrl}}"], "path": ["api", "v1", "vegetales", "9999"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 Not Found\", function () { pm.response.to.have.status(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "Preparados",
+      "item": [
+        {
+          "name": "Crear Preparado",
+          "request": {
+            "method": "POST",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "body": {
+              "mode": "raw",
+              "raw": "{\n  \"nombre\": \"Preparado Demo\",\n  \"descripcion\": \"Descripción de ejemplo\"\n}",
+              "options": {"raw": {"language": "json"}}
+            },
+            "url": {"raw": "{{baseUrl}}/api/v1/preparados", "host": ["{{baseUrl}}"], "path": ["api", "v1", "preparados"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 201 Created\", function () { pm.response.to.have.status(201); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Preparado sin Token (Error 401)",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {"raw": "{{baseUrl}}/api/v1/preparados/1", "host": ["{{baseUrl}}"], "path": ["api", "v1", "preparados", "1"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 401 Unauthorized\", function () { pm.response.to.have.status(401); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        },
+        {
+          "name": "Obtener Preparado Inexistente (Error 404)",
+          "request": {
+            "method": "GET",
+            "header": [{"key": "Authorization", "value": "Bearer {{authToken}}", "type": "text"}],
+            "url": {"raw": "{{baseUrl}}/api/v1/preparados/9999", "host": ["{{baseUrl}}"], "path": ["api", "v1", "preparados", "9999"]}
+          },
+          "event": [
+            {
+              "listen": "test",
+              "script": {
+                "exec": [
+                  "pm.test(\"Status code is 404 Not Found\", function () { pm.response.to.have.status(404); });"
+                ],
+                "type": "text/javascript"
+              }
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "event": [],
+  "variable": [
+    {"key": "baseUrl", "value": "http://localhost"},
+    {"key": "authToken", "value": ""}
+  ]
+}
