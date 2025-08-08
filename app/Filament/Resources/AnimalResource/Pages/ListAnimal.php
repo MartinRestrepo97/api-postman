@@ -6,7 +6,7 @@ use App\Filament\Resources\AnimalResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListAnimals extends ListRecords
+class ListAnimal extends ListRecords
 {
     protected static string $resource = AnimalResource::class;
 

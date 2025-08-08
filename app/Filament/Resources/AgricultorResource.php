@@ -23,7 +23,22 @@ class AgricultorResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('nombres')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('apellidos')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('telefono')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('imagen')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\TextInput::make('documento')
+                    ->required()
+                    ->unique()
+                    ->maxLength(255),
             ]);
     }
 
@@ -31,7 +46,12 @@ class AgricultorResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('nombres')->searchable(),
+                Tables\Columns\TextColumn::make('apellidos')->searchable(),
+                Tables\Columns\TextColumn::make('telefono'),
+                Tables\Columns\TextColumn::make('documento')->searchable(),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -56,7 +76,7 @@ class AgricultorResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAgricultors::route('/'),
+            'index' => Pages\ListAgricultor::route('/'),
             'create' => Pages\CreateAgricultor::route('/create'),
             'edit' => Pages\EditAgricultor::route('/{record}/edit'),
         ];

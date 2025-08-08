@@ -54,12 +54,14 @@ class PreparadoController extends Controller
         }
 
         $preparado->update($validator->validated());
-        return response()->json($preparado);
+        $preparado->refresh();
+        return response()->json($preparado, 200);
     }
 
     // DELETE /api/v1/preparados/{id}
     public function destroy(Preparado $preparado)
     {
+        $preparado->agricultores()->detach();
         $preparado->delete();
         return response()->json(null, 204);
     }

@@ -54,12 +54,14 @@ class VegetalController extends Controller
         }
 
         $vegetal->update($validator->validated());
-        return response()->json($vegetal);
+        $vegetal->refresh();
+        return response()->json($vegetal, 200);
     }
 
     // DELETE /api/v1/vegetales/{id}
     public function destroy(Vegetal $vegetal)
     {
+        $vegetal->agricultores()->detach();
         $vegetal->delete();
         return response()->json(null, 204);
     }

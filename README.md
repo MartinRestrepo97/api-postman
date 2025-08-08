@@ -121,3 +121,29 @@ Importa la colección Postman desde `docs/AMCA_API_V1.postman_collection.json` y
 
 ---
 El Laravel framework es open-sourced software licensed under the [MIT license](https://opensource.org/licenses/MIT).
+
+## Estructura del Proyecto
+
+- `app/` — Código de aplicación (modelos, controladores, proveedores). 
+  - `Http/Controllers/Api/V1/` — Controladores REST de la API v1.
+  - `Models/` — Modelos Eloquent y relaciones.
+- `bootstrap/` — Bootstrap de Laravel y cachés de configuración.
+- `config/` — Archivos de configuración de la aplicación.
+- `database/` — Migraciones, seeders y base de datos SQLite de ejemplo.
+  - `migrations/` — Esquema de tablas y pivotes.
+  - `factories/` — Generadores de datos para pruebas.
+- `docs/` — Documentación de setup y de la API; colección Postman.
+  - `memo_auditoria.md` — Bitácora del proceso de auditoría técnica.
+  - `errores_a_corregir.md` — Listado de issues detectados y plan de solución.
+- `public/` — Punto de entrada público (`index.php`) y assets compilados.
+- `resources/` — Fuentes de vistas y assets (CSS/JS) para build.
+- `routes/` — Definiciones de rutas (`api.php`, `web.php`, `console.php`).
+- `storage/` — Archivos generados (logs, caché, sesiones, vistas).
+- `tests/` — Pruebas unitarias y de características.
+  - `Feature/Api/V1/` — Pruebas de API v1 (CRUD y relaciones).
+- `vite.config.js` — Configuración de Vite para assets (Tailwind + laravel-vite-plugin).
+- `composer.json` — Dependencias PHP y scripts de Laravel.
+- `package.json` — Scripts y dependencias de frontend.
+
+## Documentación relacionada
+- Ver `docs/Guia_Comandos_Tests.md` para una guía rápida de ejecución de pruebas (PHPUnit/Artisan) y validación opcional con Newman.

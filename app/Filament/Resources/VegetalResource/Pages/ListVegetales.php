@@ -6,7 +6,7 @@ use App\Filament\Resources\VegetalResource;
 use Filament\Actions;
 use Filament\Resources\Pages\ListRecords;
 
-class ListVegetals extends ListRecords
+class ListVegetales extends ListRecords
 {
     protected static string $resource = VegetalResource::class;
 

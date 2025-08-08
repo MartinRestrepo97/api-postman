@@ -39,7 +39,7 @@ class AnimalController extends Controller
     // GET /api/v1/animales/{id}
     public function show(Animal $animal)
     {
-        $animal->load('fincas', 'animales', 'vegetales', 'preparados');
+        $animal->load('agricultores');
         return response()->json($animal);
     }
 
@@ -61,12 +61,14 @@ class AnimalController extends Controller
         }
 
         $animal->update($validator->validated());
-        return response()->json($animal);
+        $animal->refresh();
+        return response()->json($animal, 200);
     }
 
     // DELETE /api/v1/animales/{id}
     public function destroy(Animal $animal)
     {
+        $animal->agricultores()->detach();
         $animal->delete();
         return response()->json(null, 204);
     }

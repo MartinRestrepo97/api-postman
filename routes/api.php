@@ -19,15 +19,15 @@ Route::post('/login', function (Request $request) {
     $user = User::where('email', $request->email)->first();
 
     if (! $user || ! Hash::check($request->password, $user->password)) {
-        throw ValidationException::withMessages([
-            'email' => ['Las credenciales proporcionadas son incorrectas.'],
-        ]);
+        return response()->json([
+            'message' => 'Credenciales inválidas.'
+        ], 401);
     }
 
     return response()->json([
         'token' => $user->createToken('api-token')->plainTextToken
     ]);
-});
+})->middleware('throttle:10,1');
 
 Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     Route::apiResource('agricultores', AgricultorController::class);
@@ -38,7 +38,7 @@ Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
 });
 
 // Rutas para gestionar las relaciones Many-to-Many
-Route::prefix('v1')->group(function () {
+Route::prefix('v1')->middleware('auth:sanctum')->group(function () {
     // ...otras rutas...
 
     // Fincas

@@ -61,12 +61,18 @@ class AgricultorController extends Controller
         }
 
         $agricultor->update($validator->validated());
-        return response()->json($agricultor);
+        $agricultor->refresh();
+        return response()->json($agricultor, 200);
     }
 
     // DELETE /api/v1/agricultores/{id}
     public function destroy(Agricultor $agricultor)
     {
+        // Asegurar eliminación limpia de pivotes
+        $agricultor->fincas()->detach();
+        $agricultor->animales()->detach();
+        $agricultor->vegetales()->detach();
+        $agricultor->preparados()->detach();
         $agricultor->delete();
         return response()->json(null, 204);
     }

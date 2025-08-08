@@ -23,7 +23,26 @@ class AnimalResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('especie')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('raza')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('alimentacion')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('cuidados')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('reproduccion')
+                    ->required()
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('observaciones')
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('imagen')
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -31,7 +50,13 @@ class AnimalResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('especie')->searchable(),
+                Tables\Columns\TextColumn::make('raza')->searchable(),
+                Tables\Columns\TextColumn::make('alimentacion')->limit(30),
+                Tables\Columns\TextColumn::make('cuidados')->limit(30),
+                Tables\Columns\TextColumn::make('reproduccion')->limit(30),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -56,7 +81,7 @@ class AnimalResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListAnimals::route('/'),
+            'index' => Pages\ListAnimal::route('/'),
             'create' => Pages\CreateAnimal::route('/create'),
             'edit' => Pages\EditAnimal::route('/{record}/edit'),
         ];

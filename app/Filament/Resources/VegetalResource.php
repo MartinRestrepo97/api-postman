@@ -23,7 +23,17 @@ class VegetalResource extends Resource
     {
         return $form
             ->schema([
-                //
+                Forms\Components\TextInput::make('especie')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\TextInput::make('cultivo')
+                    ->required()
+                    ->maxLength(255),
+                Forms\Components\Textarea::make('observaciones')
+                    ->columnSpanFull(),
+                Forms\Components\Textarea::make('imagen')
+                    ->required()
+                    ->columnSpanFull(),
             ]);
     }
 
@@ -31,7 +41,11 @@ class VegetalResource extends Resource
     {
         return $table
             ->columns([
-                //
+                Tables\Columns\TextColumn::make('especie')->searchable(),
+                Tables\Columns\TextColumn::make('cultivo')->searchable(),
+                Tables\Columns\TextColumn::make('observaciones')->limit(30),
+                Tables\Columns\TextColumn::make('created_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
+                Tables\Columns\TextColumn::make('updated_at')->dateTime()->sortable()->toggleable(isToggledHiddenByDefault: true),
             ])
             ->filters([
                 //
@@ -56,7 +70,7 @@ class VegetalResource extends Resource
     public static function getPages(): array
     {
         return [
-            'index' => Pages\ListVegetals::route('/'),
+            'index' => Pages\ListVegetales::route('/'),
             'create' => Pages\CreateVegetal::route('/create'),
             'edit' => Pages\EditVegetal::route('/{record}/edit'),
         ];
