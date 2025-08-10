@@ -41,6 +41,8 @@ class AnimalResource extends Resource
                 Forms\Components\Textarea::make('observaciones')
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('imagen')
+                    ->label('Imagen (URL)')
+                    ->url()
                     ->required()
                     ->columnSpanFull(),
             ]);

@@ -30,15 +30,50 @@ class AgricultorResource extends Resource
                     ->required()
                     ->maxLength(255),
                 Forms\Components\TextInput::make('telefono')
+                    ->tel()
                     ->required()
-                    ->maxLength(255),
-                Forms\Components\Textarea::make('imagen')
+                    ->maxLength(100)
+                    ->placeholder('+34 600 000 000'),
+                Forms\Components\TextInput::make('imagen')
+                    ->label('Imagen (URL)')
+                    ->url()
                     ->required()
-                    ->columnSpanFull(),
+                    ->columnSpanFull()
+                    ->placeholder('https://...'),
                 Forms\Components\TextInput::make('documento')
                     ->required()
-                    ->unique()
-                    ->maxLength(255),
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(50),
+
+                Forms\Components\Section::make('Relaciones')
+                    ->schema([
+                        Forms\Components\Select::make('fincas')
+                            ->label('Fincas')
+                            ->relationship('fincas', 'nombre')
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
+                        Forms\Components\Select::make('animales')
+                            ->label('Animales')
+                            ->relationship('animales', 'especie')
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
+                        Forms\Components\Select::make('vegetales')
+                            ->label('Vegetales')
+                            ->relationship('vegetales', 'especie')
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
+                        Forms\Components\Select::make('preparados')
+                            ->label('Preparados')
+                            ->relationship('preparados', 'nombre')
+                            ->multiple()
+                            ->preload()
+                            ->searchable(),
+                    ])
+                    ->columns(2)
+                    ->collapsible(),
             ]);
     }
 
@@ -69,7 +104,7 @@ class AgricultorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            //
+            // Se gestionan mediante Selects con ->relationship en el formulario
         ];
     }
 

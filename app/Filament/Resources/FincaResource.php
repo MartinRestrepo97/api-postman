@@ -32,7 +32,9 @@ class FincaResource extends Resource
                 Forms\Components\TextInput::make('propietario')
                     ->required()
                     ->maxLength(255),
-                Forms\Components\Textarea::make('imagen')
+                Forms\Components\TextInput::make('imagen')
+                    ->label('Imagen (URL)')
+                    ->url()
                     ->required()
                     ->columnSpanFull(),
             ]);

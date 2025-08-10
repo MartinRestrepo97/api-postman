@@ -20,7 +20,7 @@ Base de datos de pruebas configurada en `phpunit.xml`:
 
 - Ejecutar toda la suite con Artisan (equivalente):
   ```powershell
-  php artisan test
+  php artisan 
   ```
 
 ## Ejecutar por suites
