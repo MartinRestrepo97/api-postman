@@ -22,6 +22,8 @@ class AnimalResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(2)
+            ->extraAttributes(['style' => 'margin: 24px;'])
             ->schema([
                 Forms\Components\TextInput::make('especie')
                     ->required()
@@ -29,6 +31,11 @@ class AnimalResource extends Resource
                 Forms\Components\TextInput::make('raza')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('imagen')
+                    ->label('Imagen (URL)')
+                    ->url()
+                    ->required()
+                    ->columnSpanFull(),
                 Forms\Components\Textarea::make('alimentacion')
                     ->required()
                     ->columnSpanFull(),
@@ -39,11 +46,6 @@ class AnimalResource extends Resource
                     ->required()
                     ->columnSpanFull(),
                 Forms\Components\Textarea::make('observaciones')
-                    ->columnSpanFull(),
-                Forms\Components\Textarea::make('imagen')
-                    ->label('Imagen (URL)')
-                    ->url()
-                    ->required()
                     ->columnSpanFull(),
             ]);
     }

@@ -22,6 +22,11 @@ class AgricultorResource extends Resource
     public static function form(Form $form): Form
     {
         return $form
+            ->columns(2)
+            ->extraAttributes([
+                'class' => 'bg-filament-card border border-gray-700 rounded-xl p-6',
+                'style' => 'margin:24px;'
+            ])
             ->schema([
                 Forms\Components\TextInput::make('nombres')
                     ->required()
@@ -29,6 +34,10 @@ class AgricultorResource extends Resource
                 Forms\Components\TextInput::make('apellidos')
                     ->required()
                     ->maxLength(255),
+                Forms\Components\TextInput::make('documento')
+                    ->required()
+                    ->unique(ignoreRecord: true)
+                    ->maxLength(50),
                 Forms\Components\TextInput::make('telefono')
                     ->tel()
                     ->required()
@@ -40,11 +49,6 @@ class AgricultorResource extends Resource
                     ->required()
                     ->columnSpanFull()
                     ->placeholder('https://...'),
-                Forms\Components\TextInput::make('documento')
-                    ->required()
-                    ->unique(ignoreRecord: true)
-                    ->maxLength(50),
-
                 Forms\Components\Section::make('Relaciones')
                     ->schema([
                         Forms\Components\Select::make('fincas')
@@ -104,7 +108,10 @@ class AgricultorResource extends Resource
     public static function getRelations(): array
     {
         return [
-            // Se gestionan mediante Selects con ->relationship en el formulario
+            RelationManagers\FincasRelationManager::class,
+            RelationManagers\AnimalesRelationManager::class,
+            RelationManagers\VegetalesRelationManager::class,
+            RelationManagers\PreparadosRelationManager::class,
         ];
     }
 

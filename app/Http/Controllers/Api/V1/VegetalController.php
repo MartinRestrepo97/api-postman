@@ -36,12 +36,23 @@ class VegetalController extends Controller
     // GET /api/v1/vegetales/{id}
     public function show(Vegetal $vegetal)
     {
-        return response()->json($vegetal);
+        $model = \App\Models\Vegetal::find(request()->route('vegetal'));
+        if (!$model) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+        return response()->json($model);
     }
 
     // PUT /api/v1/vegetales/{id}
     public function update(Request $request, Vegetal $vegetal)
     {
+        $model = $vegetal;
+        if (!$model) {
+            $model = \App\Models\Vegetal::withTrashed()->find($request->route('vegetal'));
+        }
+        if (!$model) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
         $validator = Validator::make($request->all(), [
             'especie' => 'sometimes|required|string|max:255',
             'cultivo' => 'sometimes|required|string|max:255',
@@ -53,9 +64,13 @@ class VegetalController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $vegetal->update($validator->validated());
-        $vegetal->refresh();
-        return response()->json($vegetal, 200);
+        $model->fill($validator->validated());
+        $model->save();
+        $updated = \App\Models\Vegetal::withTrashed()->find($model->id);
+        if ($updated) {
+            return response()->json($updated, 200);
+        }
+        return response()->json([], 200);
     }
 
     // DELETE /api/v1/vegetales/{id}

@@ -42,27 +42,42 @@ class AgricultorController extends Controller
     // GET /api/v1/agricultores/{id}
     public function show(Agricultor $agricultor)
     {
-        return response()->json($agricultor);
+        $model = \App\Models\Agricultor::find(request()->route('agricultor'));
+        if (!$model) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+        return response()->json($model);
     }
 
     // PUT /api/v1/agricultores/{id}
     public function update(Request $request, Agricultor $agricultor)
     {
+        $model = $agricultor;
+        if (!$model) {
+            $model = \App\Models\Agricultor::withTrashed()->find($request->route('agricultor'));
+        }
+        if (!$model) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
         $validator = Validator::make($request->all(), [
             'nombres' => 'sometimes|required|string|max:255',
             'apellidos' => 'sometimes|required|string|max:255',
             'telefono' => 'sometimes|required|string|max:100',
             'imagen' => 'sometimes|required|string',
-            'documento' => 'sometimes|required|string|max:50|unique:agricultores,documento,' . $agricultor->id,
+            'documento' => 'sometimes|required|string|max:50|unique:agricultores,documento,' . $model->id,
         ]);
 
         if ($validator->fails()) {
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $agricultor->update($validator->validated());
-        $agricultor->refresh();
-        return response()->json($agricultor, 200);
+        $model->fill($validator->validated());
+        $model->save();
+        $updated = \App\Models\Agricultor::withTrashed()->find($model->id);
+        if ($updated) {
+            return response()->json($updated, 200);
+        }
+        return response()->json([], 200);
     }
 
     // DELETE /api/v1/agricultores/{id}

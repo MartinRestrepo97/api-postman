@@ -9,4 +9,9 @@ use Filament\Resources\Pages\CreateRecord;
 class CreateAnimal extends CreateRecord
 {
     protected static string $resource = AnimalResource::class;
+
+    protected function getCreatedNotificationRedirectUrl(): ?string
+    {
+        return $this->getResource()::getUrl('index');
+    }
 }

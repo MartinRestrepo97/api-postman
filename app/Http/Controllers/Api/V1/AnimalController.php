@@ -39,13 +39,23 @@ class AnimalController extends Controller
     // GET /api/v1/animales/{id}
     public function show(Animal $animal)
     {
-        $animal->load('agricultores');
-        return response()->json($animal);
+        $model = \App\Models\Animal::find(request()->route('animal'));
+        if (!$model) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
+        return response()->json($model);
     }
 
     // PUT /api/v1/animales/{id}
     public function update(Request $request, Animal $animal)
     {
+        $model = $animal;
+        if (!$model) {
+            $model = \App\Models\Animal::withTrashed()->find($request->route('animal'));
+        }
+        if (!$model) {
+            return response()->json(['message' => 'Not Found'], 404);
+        }
         $validator = Validator::make($request->all(), [
             'especie' => 'sometimes|required|string|max:255',
             'raza' => 'sometimes|required|string|max:255',
@@ -60,9 +70,13 @@ class AnimalController extends Controller
             return response()->json(['errors' => $validator->errors()], 422);
         }
 
-        $animal->update($validator->validated());
-        $animal->refresh();
-        return response()->json($animal, 200);
+        $model->fill($validator->validated());
+        $model->save();
+        $updated = \App\Models\Animal::withTrashed()->find($model->id);
+        if ($updated) {
+            return response()->json($updated, 200);
+        }
+        return response()->json([], 200);
     }
 
     // DELETE /api/v1/animales/{id}
