@@ -23,6 +23,8 @@ class VegetalesRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('especie')->searchable(),
+                Tables\Columns\TextColumn::make('cultivo')->searchable(),
+                Tables\Columns\TextColumn::make('observaciones')->limit(30),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make(),

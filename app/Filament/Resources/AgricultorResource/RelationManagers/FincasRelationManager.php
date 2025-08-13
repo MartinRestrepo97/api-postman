@@ -22,7 +22,12 @@ class FincasRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nombre')->searchable(),
+                Tables\Columns\TextColumn::make('nombre')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('ubicacion')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('propietario')
+                    ->searchable(),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make(),

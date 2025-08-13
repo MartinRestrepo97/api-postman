@@ -22,7 +22,10 @@ class PreparadosRelationManager extends RelationManager
     {
         return $table
             ->columns([
-                Tables\Columns\TextColumn::make('nombre')->searchable(),
+                Tables\Columns\TextColumn::make('nombre')
+                    ->searchable(),
+                Tables\Columns\TextColumn::make('preparacion')
+                    ->searchable(),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make(),

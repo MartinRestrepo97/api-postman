@@ -23,6 +23,10 @@ class AnimalesRelationManager extends RelationManager
         return $table
             ->columns([
                 Tables\Columns\TextColumn::make('especie')->searchable(),
+                Tables\Columns\TextColumn::make('raza')->searchable(),
+                Tables\Columns\TextColumn::make('alimentacion')->limit(30),
+                Tables\Columns\TextColumn::make('cuidados')->limit(30),
+                Tables\Columns\TextColumn::make('reproduccion')->limit(30),
             ])
             ->headerActions([
                 Tables\Actions\AttachAction::make(),
